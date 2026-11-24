@@ -1,13 +1,13 @@
 """The Long Roast: Lawmakers and the File They Cannot Convert -- make.fun entry.
 
-One satirical sentence roasting lawmakers who would regulate AI, crypto, and the internet but cannot convert a file to PDF. The program checks the entry, prints it, and writes it to
-/output/entry.txt.
+One satirical sentence roasting lawmakers who would regulate AI, crypto,
+and the internet but cannot convert a file to PDF. The program checks
+the entry, prints it, and writes it to /output/entry.txt.
 Pure Python 3.13 standard library only; deterministic; no network.
 SPDX-License-Identifier: MIT
 """
 
 import os
-import re
 
 LINE = (
     "Before lawmakers may regulate AI, crypto, or the internet, they must first "
@@ -32,6 +32,15 @@ def check_entry(line):
     return line
 
 
+def check_shape(line):
+    """The roast is a single sentence: one terminal period, at the end."""
+    if not line.endswith("."):
+        raise ValueError("roast must end with a period")
+    if line.count(". ") > 0 or line.count("! ") > 0 or line.count("? ") > 0:
+        raise ValueError("roast must be a single sentence")
+    return line
+
+
 def write_entry(line):
     """Print the line and store it in /output/entry.txt."""
     print(line)
@@ -42,7 +51,7 @@ def write_entry(line):
 
 def run():
     # Check before writing, so only a well-formed entry is stored.
-    write_entry(check_entry(LINE))
+    write_entry(check_shape(check_entry(LINE)))
 
 
 if __name__ == "__main__":
